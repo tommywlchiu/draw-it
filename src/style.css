@@ -1,0 +1,294 @@
+:root {
+  color-scheme: light;
+  --ink: #2b2d42;
+  --pink: #ef476f;
+  --orange: #ff9f1c;
+  --yellow: #ffd23f;
+  --green: #06d6a0;
+  --blue: #118ab2;
+  --purple: #9b5de5;
+  --card: #fffdf6;
+  font-family: "Baloo 2", "Fredoka", "Chalkboard SE", "Marker Felt", "Comic Sans MS", "Trebuchet MS", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { margin: 0; color: var(--ink); overflow: hidden; background: #8ed8ff; }
+
+.app {
+  position: relative; display: flex; flex-direction: column; height: 100%;
+  background:
+    radial-gradient(circle at 15% 85%, rgba(255, 255, 255, 0.55) 0 9%, transparent 9.5%),
+    radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.55) 0 7%, transparent 7.5%),
+    linear-gradient(180deg, #7fd3ff 0%, #c6ecff 55%, #fff1c9 100%);
+}
+
+/* ---------- floating background ---------- */
+.decor { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.decor span { position: absolute; bottom: -8rem; opacity: 0.9; animation: floatUp linear infinite; }
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-60vh) rotate(10deg) translateX(20px); }
+  100% { transform: translateY(-120vh) rotate(-8deg); }
+}
+
+/* ---------- full screens ---------- */
+.screen { position: relative; z-index: 1; flex: 1; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 2rem; text-align: center; animation: popIn 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+.logo { margin: 0; font-size: 9rem; line-height: 1; letter-spacing: 0.02em; -webkit-text-stroke: 6px var(--ink); paint-order: stroke fill; text-shadow: 0 8px 0 rgba(43, 45, 66, 0.25); }
+.logo span { display: inline-block; animation: wave 1.6s ease-in-out infinite; }
+@keyframes wave { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-22px) rotate(4deg); } }
+.tagline { margin: 0; font-size: 2.2rem; font-weight: 700; color: var(--ink); }
+.title { margin: 0; font-size: 3.4rem; color: var(--ink); text-shadow: 0 3px 0 #fff; }
+.title.sm { font-size: 2.4rem; }
+.small { margin: 0; font-size: 1.15rem; color: rgba(43, 45, 66, 0.7); max-width: 46rem; }
+.lead { margin: 0; font-size: 1.8rem; font-weight: 700; }
+
+/* ---------- buttons ---------- */
+.btn {
+  font: inherit; font-size: 1.6rem; font-weight: 800; color: var(--ink); cursor: pointer;
+  padding: 0.7rem 1.8rem; border-radius: 999px; border: 4px solid var(--ink); background: #fff;
+  box-shadow: 0 6px 0 var(--ink); transition: transform 0.12s, box-shadow 0.12s;
+}
+.btn:hover, .btn:focus-visible { transform: translateY(-4px) rotate(-2deg) scale(1.06); box-shadow: 0 10px 0 var(--ink); outline: none; }
+.btn:focus-visible { outline: 5px solid var(--yellow); outline-offset: 4px; }
+.btn:active { transform: translateY(4px) scale(0.97); box-shadow: 0 2px 0 var(--ink); }
+.btn.primary { background: var(--green); }
+.btn.big { font-size: 2.6rem; padding: 1rem 3rem; }
+.btn.ghost { background: #fff8e1; }
+.btn.pill.on { background: var(--yellow); }
+.btn.dice { padding: 0.4rem 1rem; font-size: 2rem; }
+.pulse { animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+.pulse:hover, .pulse:focus-visible { animation: none; }
+
+/* ---------- setup ---------- */
+.counts { display: flex; gap: 1rem; }
+.roster { display: grid; gap: 0.9rem; }
+.row-player { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 1rem; border-radius: 24px; background: var(--card); border: 4px solid var(--ink); box-shadow: 0 6px 0 rgba(43, 45, 66, 0.25); animation: slideIn 0.45s cubic-bezier(0.2, 1.3, 0.4, 1) both; }
+.row-player input { font: inherit; font-size: 2rem; font-weight: 800; width: 22rem; padding: 0.3rem 0.8rem; border-radius: 14px; border: 3px dashed rgba(43, 45, 66, 0.4); background: #fff; color: var(--ink); }
+.row-player input:focus { outline: 4px solid var(--yellow); border-style: solid; }
+.avatar { position: relative; display: inline-grid; place-items: center; width: 4.6rem; height: 4.6rem; padding: 0.2rem; border-radius: 50%; background: #fff; border: 3px solid var(--ink); animation: bob 2.4s ease-in-out infinite; }
+.avatar.sm { width: 2.4rem; height: 2.4rem; padding: 0.1rem; border-width: 2px; vertical-align: middle; }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-6px) rotate(4deg); } }
+.row { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; align-items: center; }
+
+/* ---------- game header ---------- */
+header { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.8rem 2rem 0.4rem; }
+.scores { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.9rem 0.25rem 0.35rem; border-radius: 999px; border: 3px solid var(--ink); background: #fff; font-size: 1.35rem; font-weight: 800; box-shadow: 0 4px 0 rgba(43, 45, 66, 0.3); }
+.chip b { margin-left: 0.2rem; padding: 0 0.6rem; border-radius: 999px; background: var(--yellow); }
+.chip.artist { background: #e4f6ff; animation: wiggle 1.2s ease-in-out infinite; }
+.chip.bump { animation: bump 0.5s cubic-bezier(0.2, 1.6, 0.4, 1); }
+.chip.artist.bump { animation: bump 0.5s cubic-bezier(0.2, 1.6, 0.4, 1), wiggle 1.2s 0.5s ease-in-out infinite; }
+.chip.lg { font-size: 1.8rem; padding: 0.4rem 1.1rem 0.4rem 0.5rem; animation: popIn 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+.chip.gain { background: #d8ffe9; border-color: #0a8f6a; }
+@keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.3) rotate(-4deg); } 100% { transform: scale(1); } }
+@keyframes wiggle { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+.cat { flex: 1; text-align: center; font-size: 1.8rem; font-weight: 800; }
+.timer { display: flex; align-items: center; gap: 0.7rem; min-width: 14rem; justify-content: flex-end; font-size: 2.2rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.timer .bar { flex: 1; height: 1.1rem; border-radius: 999px; border: 3px solid var(--ink); background: #fff; overflow: hidden; }
+.timer .bar i { display: block; height: 100%; background: var(--green); transition: width 0.25s linear; }
+.timer.low .bar i { background: var(--pink); }
+.timer.low b { color: var(--pink); animation: pulse 0.5s ease-in-out infinite; }
+
+/* ---------- the paper canvas ---------- */
+.canvasbox {
+  position: relative; z-index: 1; flex: 1; margin: 0.4rem 2rem; border-radius: 28px; overflow: hidden;
+  border: 8px solid var(--ink); box-shadow: 0 10px 0 rgba(43, 45, 66, 0.3);
+  background-color: #fffef9;
+  background-image: radial-gradient(rgba(17, 138, 178, 0.18) 2px, transparent 2.5px);
+  background-size: 34px 34px;
+}
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hint { position: absolute; inset: auto 1rem 1rem; margin: 0; text-align: center; font-size: 1.3rem; font-weight: 700; color: rgba(43, 45, 66, 0.6); pointer-events: none; }
+
+/* ---------- overlays and cards ---------- */
+.overlay { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; padding: 1.5rem; background: rgba(142, 216, 255, 0.55); backdrop-filter: blur(3px); animation: fade 0.25s both; }
+.card { display: grid; justify-items: center; gap: 1rem; padding: 1.6rem 2.4rem; border-radius: 32px; border: 6px solid var(--ink); background: var(--card); box-shadow: 0 12px 0 rgba(43, 45, 66, 0.3); text-align: center; animation: popIn 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) both; }
+.card.wide { padding: 1.6rem 2rem; }
+.emoji-big { width: 8rem; height: 8rem; animation: wiggle 0.6s ease-in-out infinite; }
+.big-num { font-size: 10rem; font-weight: 900; line-height: 1; color: var(--pink); -webkit-text-stroke: 5px var(--ink); paint-order: stroke fill; animation: numPop 1s cubic-bezier(0.2, 1.8, 0.4, 1) both; }
+@keyframes numPop { 0% { transform: scale(0.2) rotate(-20deg); opacity: 0; } 35% { transform: scale(1.25) rotate(6deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
+.secret { margin: 0; font-size: 6rem; letter-spacing: 0.06em; color: var(--orange); -webkit-text-stroke: 4px var(--ink); paint-order: stroke fill; animation: wobbleWord 1.2s ease-in-out infinite; }
+@keyframes wobbleWord { 0%, 100% { transform: rotate(-3deg) scale(1); } 50% { transform: rotate(3deg) scale(1.06); } }
+@keyframes popIn { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.06); opacity: 1; } 100% { transform: scale(1); } }
+@keyframes slideIn { from { transform: translateX(-60px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Jeopardy board ---------- */
+.board { display: flex; gap: 0.9rem; }
+.col { display: grid; gap: 0.7rem; align-content: start; animation: slideIn 0.45s cubic-bezier(0.2, 1.3, 0.4, 1) both; }
+.catname { display: grid; justify-items: center; gap: 0.1rem; min-width: 9.5rem; padding: 0.4rem 0.6rem; border-radius: 18px; border: 4px solid var(--ink); background: var(--c); color: #fff; font-size: 1.3rem; font-weight: 800; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35); }
+.catname span { display: block; width: 3.4rem; height: 3.4rem; }
+.tile { font: inherit; font-size: 2.4rem; font-weight: 900; cursor: pointer; padding: 0.5rem 0; border-radius: 18px; border: 4px solid var(--ink); background: #fff; color: var(--c); box-shadow: 0 6px 0 var(--ink); transition: transform 0.12s, box-shadow 0.12s; }
+.col:nth-child(1) .tile { --c: #ff9f1c; } .col:nth-child(2) .tile { --c: #ef476f; } .col:nth-child(3) .tile { --c: #118ab2; } .col:nth-child(4) .tile { --c: #06a77d; } .col:nth-child(5) .tile { --c: #9b5de5; }
+.tile:hover, .tile:focus-visible { transform: translateY(-5px) rotate(-3deg) scale(1.08); box-shadow: 0 11px 0 var(--ink); outline: none; background: #fff8d6; }
+.tile:focus-visible { outline: 5px solid var(--yellow); outline-offset: 3px; }
+.tile:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
+.tile:disabled { opacity: 0.35; cursor: default; box-shadow: none; transform: none; background: #ddd; }
+
+/* ---------- reveal: the answer pops out and wiggles ---------- */
+.reveal-stage { position: relative; display: grid; place-items: center; width: 14rem; height: 12rem; }
+.reveal-emoji { width: 12rem; height: 12rem; filter: drop-shadow(0 10px 0 rgba(43, 45, 66, 0.25)); animation: emojiPop 0.9s cubic-bezier(0.2, 1.8, 0.4, 1) both, emojiWiggle 0.7s 0.9s ease-in-out infinite; transform-origin: 50% 80%; }
+@keyframes emojiPop { 0% { transform: scale(0) rotate(-40deg) translateY(60px); opacity: 0; } 55% { transform: scale(1.45) rotate(14deg) translateY(-30px); opacity: 1; } 100% { transform: scale(1) rotate(0) translateY(0); } }
+@keyframes emojiWiggle { 0%, 100% { transform: rotate(-9deg) scale(1) translateY(0); } 25% { transform: rotate(6deg) scale(1.08) translateY(-14px); } 50% { transform: rotate(10deg) scale(1) translateY(0); } 75% { transform: rotate(-5deg) scale(1.06) translateY(-8px); } }
+.spark { position: absolute; width: 3rem; height: 3rem; animation: twinkle 1s ease-in-out infinite; }
+.spark.s1 { top: 0; left: 0; } .spark.s2 { top: 10%; right: 0; animation-delay: 0.3s; } .spark.s3 { bottom: 5%; left: 6%; animation-delay: 0.6s; }
+@keyframes twinkle { 0%, 100% { transform: scale(0.4) rotate(0); opacity: 0.3; } 50% { transform: scale(1.2) rotate(25deg); opacity: 1; } }
+.reveal-word { margin: 0; font-size: 2.2rem; }
+.reveal-word b { color: var(--pink); }
+
+/* ---------- popups ---------- */
+.popup { position: absolute; top: 1.25rem; left: 50%; z-index: 6; transform: translateX(-50%); padding: 0.7rem 2rem; border-radius: 999px; border: 5px solid var(--ink); font-size: 2rem; font-weight: 800; box-shadow: 0 8px 0 rgba(43, 45, 66, 0.3); animation: dropIn 0.45s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+.popup.wrong { background: #ffe0e6; color: #b3123a; animation: dropIn 0.45s cubic-bezier(0.2, 1.6, 0.4, 1) both, shake 0.45s 0.35s; }
+.popup.right { background: #d8ffe9; color: #07704f; }
+@keyframes dropIn { 0% { transform: translate(-50%, -140%) scale(0.6); } 100% { transform: translate(-50%, 0) scale(1); } }
+@keyframes shake { 20% { margin-left: -14px; } 40% { margin-left: 14px; } 60% { margin-left: -9px; } 80% { margin-left: 9px; } }
+
+/* ---------- confetti ---------- */
+.confetti { position: absolute; inset: 0; z-index: 7; overflow: hidden; pointer-events: none; }
+.confetti i { position: absolute; top: -2rem; border-radius: 3px; animation: fall linear both; }
+@keyframes fall { to { top: 105%; margin-left: 40px; transform: rotate(720deg); } }
+
+
+/* ---------- footer: colors, status, camera ---------- */
+footer { position: relative; z-index: 2; display: flex; align-items: center; gap: 1.5rem; padding: 0.3rem 2rem 0.9rem; font-size: 1.3rem; font-weight: 800; }
+.colors { display: flex; gap: 0.6rem; }
+.swatch { width: 3.2rem; height: 3.2rem; padding: 0; border-radius: 50%; border: 4px solid var(--ink); cursor: pointer; box-shadow: 0 4px 0 rgba(43, 45, 66, 0.4); transition: transform 0.12s; }
+.swatch:hover, .swatch:focus-visible { transform: scale(1.18) rotate(8deg); outline: none; }
+.swatch:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
+.swatch.on { transform: translateY(-8px) scale(1.2); border-color: #fff; box-shadow: 0 0 0 4px var(--ink), 0 8px 0 rgba(43, 45, 66, 0.4); }
+.status { padding: 0.3rem 1rem; border-radius: 999px; background: rgba(255, 255, 255, 0.8); border: 3px solid var(--ink); }
+.guesses { flex: 1; text-align: center; font-weight: 700; }
+.mirror { position: relative; width: 170px; height: 128px; margin-top: -2.2rem; border-radius: 18px; overflow: hidden; border: 5px solid var(--ink); background: #222; box-shadow: 0 6px 0 rgba(43, 45, 66, 0.3); }
+.mirror.ready { border-color: #0a8f6a; }
+.mirror.calibrating { border-color: var(--orange); }
+.mirror.unavailable, .mirror.paused { border-color: var(--pink); }
+.mirror video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.mirror canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mirror p { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; color: #aaa; font-size: 0.9rem; }
+.mirror .badge { position: absolute; left: 0.3rem; top: 0.3rem; padding: 0 0.5rem; border-radius: 999px; background: rgba(255, 255, 255, 0.9); font-size: 0.75rem; }
+.mirror .diag { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 0.4rem; background: rgba(0, 0, 0, 0.6); font-size: 0.65rem; color: #ddd; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .decor { display: none; }
+}
+
+/* ---------- inline drawings ---------- */
+/* svg.ico beats the shared .art { width: 100% } regardless of stylesheet order */
+svg.ico { display: inline-block; width: 1.5em; height: 1.5em; vertical-align: -0.3em; }
+svg.ico.lg { width: 1.3em; height: 1.3em; }
+.btn svg.ico { width: 1.2em; height: 1.2em; vertical-align: -0.2em; }
+.tile svg.ico { width: 1.1em; height: 1.1em; vertical-align: -0.15em; }
+.catname span svg, .avatar svg, .reveal-emoji svg, .emoji-big svg, .spark svg { width: 100%; height: 100%; }
+.avatar .crown { position: absolute; left: 50%; top: -1.6rem; width: 2.6rem; height: 2.6rem; transform: translateX(-50%); z-index: 1; }
+.avatar { overflow: visible; }
+.decor span svg { width: 100%; height: 100%; }
+
+/* The pen-status hand should sit still; a waving hand next to the canvas is distracting. */
+.status svg [class*="a-"], .hint svg [class*="a-"], .cat svg [class*="a-"] { animation: none !important; }
+header .cat svg.ico { width: 1.6em; height: 1.6em; }
+
+/* ---------- sound and music buttons ---------- */
+.audio-ctl { position: fixed; top: 0.7rem; right: 1.2rem; z-index: 20; display: flex; gap: 0.6rem; }
+.ctl { display: grid; justify-items: center; gap: 0; width: 5.2rem; padding: 0.3rem 0.2rem 0.2rem; border-radius: 20px; border: 4px solid var(--ink); background: #fff; box-shadow: 0 5px 0 rgba(43, 45, 66, 0.35); font: inherit; font-size: 0.95rem; font-weight: 800; color: var(--ink); cursor: pointer; transition: transform 0.12s, box-shadow 0.12s; }
+.ctl svg { width: 2.6rem; height: 2.6rem; }
+.ctl:hover, .ctl:focus-visible { transform: translateY(-3px) rotate(-3deg); box-shadow: 0 8px 0 rgba(43, 45, 66, 0.35); outline: none; }
+.ctl:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
+.ctl.off { background: #ffe0e6; color: #b3123a; }
+header { padding-right: 13rem; }
+
+/* ---------- podium ---------- */
+.podium { display: flex; align-items: flex-end; justify-content: center; gap: 1.1rem; width: 100%; margin: 2.8rem 0 0.2rem; padding: 0 1rem; border-bottom: 8px solid var(--ink); }
+.step { display: grid; justify-items: center; align-content: end; }
+.who { position: relative; display: grid; justify-items: center; gap: 0.15rem; padding-bottom: 0.5rem; animation: popIn 0.6s calc(var(--d) + 0.5s) cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+.who .avatar.big { width: 6.6rem; height: 6.6rem; padding: 0.3rem; }
+.who .crown { position: absolute; top: -2.4rem; left: 50%; width: 3.4rem; height: 3.4rem; transform: translateX(-50%); z-index: 2; animation: aBob 1.4s ease-in-out infinite; }
+.step .pname { max-width: 11rem; font-size: 1.5rem; font-weight: 800; text-align: center; line-height: 1.1; }
+.pillar { width: 11.5rem; display: grid; place-content: center; justify-items: center; gap: 0; border: 5px solid var(--ink); border-bottom: 0; border-radius: 22px 22px 0 0; transform-origin: bottom; animation: rise 0.7s var(--d) cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+.pillar b { font-size: 3rem; line-height: 1; }
+.pillar small { font-size: 1rem; font-weight: 700; opacity: 0.7; }
+.pillar .medal { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; margin-bottom: 0.3rem; border-radius: 50%; border: 4px solid var(--ink); background: #fff; font-size: 1.4rem; font-weight: 900; }
+.place0 .pillar { height: 13rem; background: #ffd23f; }
+.place1 .pillar { height: 10rem; background: #d5dde8; }
+.place2 .pillar { height: 7.6rem; background: #e0a96d; }
+.place3 .pillar { height: 6.4rem; background: #a8dcff; }
+.place3 .pillar small { display: none; }
+.place3 .pillar .medal, .place2 .pillar .medal { width: 2.2rem; height: 2.2rem; font-size: 1.15rem; }
+.place3 .pillar b, .place2 .pillar b { font-size: 2.4rem; }
+@keyframes rise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+/* ---------- drawing toolbar ---------- */
+.toolbar { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+.sizes { display: flex; gap: 0.5rem; padding: 0.3rem 0.5rem; border-radius: 999px; background: rgba(255, 255, 255, 0.8); border: 3px solid var(--ink); }
+.size { display: grid; place-items: center; width: 3rem; height: 3rem; padding: 0; border-radius: 50%; border: 3px solid transparent; background: transparent; cursor: pointer; transition: transform 0.12s; }
+.size i { display: block; border-radius: 50%; background: var(--ink); }
+.size.on { border-color: var(--ink); background: var(--yellow); transform: translateY(-3px) scale(1.1); }
+.size:hover, .size:focus-visible { transform: scale(1.15); outline: none; }
+.size:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
+.tool { display: grid; justify-items: center; width: 4.6rem; padding: 0.2rem 0.2rem 0.1rem; border-radius: 18px; border: 4px solid var(--ink); background: #fff; box-shadow: 0 4px 0 rgba(43, 45, 66, 0.35); font: inherit; font-size: 0.85rem; font-weight: 800; color: var(--ink); cursor: pointer; transition: transform 0.12s; }
+.tool svg { width: 2.2rem; height: 2.2rem; }
+.tool.on { background: #ffe7f4; border-color: var(--pink); transform: translateY(-4px); }
+.tool:hover, .tool:focus-visible { transform: translateY(-3px) rotate(-3deg); outline: none; }
+.tool:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
+
+/* ---------- exit ---------- */
+.exit-btn { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 1rem 0.3rem 0.6rem; border-radius: 999px; border: 3px solid var(--ink); background: #fff; box-shadow: 0 4px 0 rgba(43, 45, 66, 0.3); font: inherit; font-size: 1.15rem; font-weight: 800; color: var(--ink); cursor: pointer; transition: transform 0.12s; }
+.exit-btn:hover, .exit-btn:focus-visible { transform: translateY(-2px) rotate(-2deg); outline: none; }
+.exit-btn:focus-visible { outline: 4px solid var(--yellow); outline-offset: 3px; }
+.exit-btn svg { width: 1.6rem; height: 1.6rem; }
+.overlay.dim { z-index: 9; background: rgba(43, 45, 66, 0.55); }
+.small.label { margin-top: 0.2rem; font-weight: 800; }
+
+/* ---------- picker and team mode ---------- */
+.btn.who { display: inline-flex; align-items: center; gap: 0.8rem; padding: 0.5rem 1.6rem 0.5rem 0.6rem; font-size: 1.8rem; }
+.btn.who .avatar { width: 4rem; height: 4rem; }
+.btn.small-btn { font-size: 1.1rem; padding: 0.3rem 1.1rem; margin-top: 0.4rem; }
+.chip .faces { display: inline-flex; }
+.chip .faces .avatar.sm { margin-left: -0.5rem; }
+.chip .faces .avatar.sm:first-child { margin-left: 0; }
+.chip.team { background: #fff7d6; }
+.teamstage { display: flex; justify-content: center; gap: 1.2rem; margin: 0.6rem 0; }
+.mate { display: grid; justify-items: center; gap: 0.2rem; animation: popIn 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+.mate .avatar.big { width: 6.4rem; height: 6.4rem; padding: 0.3rem; }
+.mate .pname { font-size: 1.3rem; font-weight: 800; max-width: 9rem; text-align: center; line-height: 1.1; }
+.stars { display: flex; justify-content: center; gap: 0.6rem; }
+.star { width: 5rem; height: 5rem; filter: grayscale(1) opacity(0.35); }
+.star.lit { filter: none; animation: starPop 0.7s cubic-bezier(0.2, 1.8, 0.4, 1) both; }
+@keyframes starPop { 0% { transform: scale(0) rotate(-60deg); } 100% { transform: scale(1) rotate(0); } }
+.teamscore { margin: 0; font-size: 1.8rem; font-weight: 700; }
+.teamscore b { color: var(--pink); }
+
+/* ---------- compact setup so four players still fit on one screen ---------- */
+.screen.setup { gap: 0.7rem; padding: 0.6rem 1rem; }
+.screen.setup .title { font-size: 2.6rem; }
+.screen.setup .btn.pill { font-size: 1.3rem; padding: 0.4rem 1.3rem; box-shadow: 0 4px 0 var(--ink); }
+.screen.setup .btn.big { font-size: 2.1rem; padding: 0.6rem 2.2rem; }
+.screen.setup .btn.ghost { font-size: 1.3rem; padding: 0.5rem 1.4rem; }
+.screen.setup .small { font-size: 1rem; }
+.screen.setup .row-player { padding: 0.35rem 0.8rem; gap: 0.7rem; }
+.screen.setup .row-player input { font-size: 1.6rem; width: 15rem; }
+.screen.setup .avatar { width: 3.4rem; height: 3.4rem; }
+.screen.setup .btn.dice { padding: 0.25rem 0.8rem; font-size: 1.5rem; }
+.roster.two { grid-template-columns: 1fr 1fr; gap: 0.7rem 1rem; }
+
+/* ---------- pointing with your hand ---------- */
+button.hand-hover { outline: 6px solid var(--yellow); outline-offset: 5px; transform: translateY(-5px) scale(1.07); }
+.hand-pointer { position: fixed; left: 0; top: 0; z-index: 30; display: none; width: 3.6rem; height: 3.6rem; margin: -1.8rem 0 0 -1.8rem; border-radius: 50%; border: 4px solid var(--ink); pointer-events: none;
+  background: conic-gradient(var(--yellow) calc(var(--p, 0) * 360deg), rgba(255, 255, 255, 0.7) 0); box-shadow: 0 4px 0 rgba(43, 45, 66, 0.35); }
+.hand-pointer::after { content: ""; position: absolute; inset: 1.1rem; border-radius: 50%; background: var(--ink); }
+
+/* The strip at the bottom of the canvas that a hand reaches into to point at the tools. */
+.tools-zone { position: absolute; left: 0; right: 0; bottom: 0; height: 10%; z-index: 3; display: none; align-items: center; justify-content: center; gap: 0.5rem;
+  border-top: 4px dashed rgba(43, 45, 66, 0.3); background: rgba(255, 210, 63, 0.12); font-size: 1.1rem; font-weight: 800; color: rgba(43, 45, 66, 0.55); pointer-events: none; transition: background 0.15s; }
+.tools-zone.hot { background: rgba(255, 210, 63, 0.5); color: var(--ink); }
+
+/* The loading circle: yellow while a hold gets ready to draw, red while it lifts the pen, and a plain pointer in menus. */
+.hand-pointer[data-mode="stop"] { background: conic-gradient(var(--pink) calc(var(--p, 0) * 360deg), rgba(255, 255, 255, 0.7) 0); }
+.hand-pointer[data-mode="start"], .hand-pointer[data-mode="stop"] { width: 5rem; height: 5rem; margin: -2.5rem 0 0 -2.5rem; }
+.hand-pointer[data-mode="start"]::after, .hand-pointer[data-mode="stop"]::after { inset: 1.6rem; background: transparent; border: 4px solid var(--ink); }
+.hp-label { position: absolute; left: 50%; top: calc(100% + 0.4rem); transform: translateX(-50%); white-space: nowrap; padding: 0.1rem 0.7rem; border-radius: 999px; background: #fff; border: 3px solid var(--ink); font-size: 1rem; font-weight: 800; color: var(--ink); }
+.hp-label:empty { display: none; }
+
+/* With hand drawing on, the tools strip sits at the bottom of the canvas, so the hint moves up out of its way. */
+.hint.above-zone { inset: auto 1rem calc(10% + 0.7rem); }

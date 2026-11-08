@@ -1,0 +1,423 @@
+{
+  "title": "Draw It",
+  "description": "Launch when the viewer wants to play a fun drawing and guessing game for the whole family, like Pictionary, Draw Something or Jeopardy. Players get silly names, take turns as the artist, pick a category tile, and draw a random secret word with their hand or the remote while everyone else says their guesses out loud. Harder tiles are worth more points. It can be played competitively for points or as a team that shares one score.",
+  "capabilities": [
+    {
+      "name": "sense.motion",
+      "reason": "Only if you turn on hand drawing: follows your hand so you can draw in the air. Nothing is recorded or sent anywhere."
+    },
+    {
+      "name": "media.camera",
+      "reason": "Only if you turn on hand drawing: shows a small mirror of you so you can see your hand. Nothing is recorded or sent anywhere."
+    }
+  ],
+  "tools": [
+    {
+      "name": "start_game",
+      "description": "Move the game forward: on the start screen it opens player setup, on the setup screen it begins the match, and after a game it starts a new match with the same players. Use ONLY when the viewer clearly asks to begin or continue: start, start game, let's go, begin, go, ready, or play again. Do NOT use it when the viewer is choosing settings: talk about team or compete mode, the number of players, names, or the timer means use set_mode, set_players, set_name or set_timer instead. 'Let's play as a team' is choosing the team mode, not starting.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "players": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 4,
+            "description": "How many people are playing, 2 to 4. Defaults to 2."
+          }
+        }
+      }
+    },
+    {
+      "name": "set_players",
+      "description": "Set how many people are playing, 2 to 4, on the start or setup screen. Use when the viewer says a number of players or people, like 'three players' or 'there are four of us'. Not for time.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 4,
+            "description": "Number of players."
+          }
+        },
+        "required": [
+          "count"
+        ]
+      }
+    },
+    {
+      "name": "set_name",
+      "description": "Give a player a custom NAME on the setup screen. Only for people's names: use it when someone says things like 'call player 2 Captain Banana' or 'my name is Sam'. Never use it for durations, numbers, settings or anything about time, sound or players count.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "player": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Which player, 1 to 4, in the order shown on screen."
+          },
+          "name": {
+            "type": "string",
+            "description": "The new name, up to 18 characters."
+          }
+        },
+        "required": [
+          "player",
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "shuffle_names",
+      "description": "Generate new random silly names on the setup screen, for one player or for everyone. Use when the viewer says shuffle, new name, or give me a silly name.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "player": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Only this player gets a new name. Leave out to shuffle everyone."
+          }
+        }
+      }
+    },
+    {
+      "name": "change_players",
+      "description": "After a game ends, go back to the setup screen to pick new players or names. Use when the viewer says new players, change players, or different names.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "pick_tile",
+      "description": "The current artist picks a tile from the Jeopardy-style board: a category and a point value. Use when someone says things like 'Animals for 200' or 'food, 300'. The value is the difficulty, so 100 is easy, 200 medium and 300 hard. Only valid while the board is showing.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "Animals",
+              "Food",
+              "Things",
+              "Places",
+              "Actions"
+            ],
+            "description": "The category name as shown on the board."
+          },
+          "points": {
+            "type": "integer",
+            "enum": [
+              100,
+              200,
+              300
+            ],
+            "description": "The tile's point value, which sets the difficulty."
+          }
+        },
+        "required": [
+          "category",
+          "points"
+        ]
+      }
+    },
+    {
+      "name": "guess",
+      "description": "Submit a guess for the secret word being drawn. Use whenever a guesser says out loud what they think the drawing is, such as 'is it a cat' or 'dog'. Pass just the guessed word. Pass player ONLY when a player's name or number was clearly spoken with the guess, such as 'Captain Banana says dog'. Do not guess who is speaking: if no name was said, leave player out and the game will ask who it was.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "word": {
+            "type": "string",
+            "description": "The guessed word or short phrase, without filler like 'is it'."
+          },
+          "player": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Player number (1-4) in scoreboard order, ONLY when that player's name or number was spoken with the guess. Otherwise leave out."
+          }
+        },
+        "required": [
+          "word"
+        ]
+      }
+    },
+    {
+      "name": "pen",
+      "description": "Put the pen down so the cursor draws, or lift it so the cursor moves without drawing. Use when the viewer says draw, start drawing, pen down, stop, lift, or pen up.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "down": {
+            "type": "boolean",
+            "description": "true to start drawing, false to lift the pen."
+          }
+        },
+        "required": [
+          "down"
+        ]
+      }
+    },
+    {
+      "name": "set_color",
+      "description": "Change the pen color. Use when the viewer names a color to draw with.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "enum": [
+              "black",
+              "red",
+              "orange",
+              "yellow",
+              "green",
+              "blue",
+              "purple",
+              "pink"
+            ],
+            "description": "The pen color."
+          }
+        },
+        "required": [
+          "color"
+        ]
+      }
+    },
+    {
+      "name": "undo",
+      "description": "Remove the last stroke. Use when the viewer says undo, oops, or take that back.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "clear",
+      "description": "Erase the whole drawing but keep the same word. Use when the viewer says clear, erase, or start the drawing over.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "skip_turn",
+      "description": "Give up on the current word and move on, or pass on picking a tile. Use when the viewer says skip, pass, give up, or next turn.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "set_audio",
+      "description": "Turn the game's sound effects and background music on or off. Use when the viewer says mute, unmute, turn the music off, turn the sound back on, or be quiet. Pass only what they mentioned: 'mute the music' is music false only, 'mute everything' or 'be quiet' is both false.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "description": "false to silence sound effects (clicks, pops, jingles), true to turn them on. Leave out to keep as is."
+          },
+          "music": {
+            "type": "boolean",
+            "description": "false to silence the background music, true to turn it on. Leave out to keep as is."
+          }
+        }
+      }
+    },
+    {
+      "name": "set_timer",
+      "description": "Set how long each artist gets to draw, in seconds, on the start or setup screen. This is about TIME: use it for any request about the timer, the clock, how long a turn is, or turn length, such as 'make it two minutes', 'give us 90 seconds', 'set the timer to 30', 'shorter turns' or 'a minute each'. Convert spoken durations to seconds (a minute is 60, two minutes is 120). Allowed values are 30, 60, 90 and 120; pick the closest.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "seconds": {
+            "type": "integer",
+            "enum": [
+              30,
+              60,
+              90,
+              120
+            ],
+            "description": "Drawing time per turn in seconds: 30, 60, 90 or 120. 'Two minutes' is 120, 'a minute' is 60, 'a minute and a half' is 90."
+          }
+        },
+        "required": [
+          "seconds"
+        ]
+      }
+    },
+    {
+      "name": "set_brush",
+      "description": "Change the pen thickness while drawing. Use when the artist says thicker, thinner, bigger, smaller, fat or thin brush.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string",
+            "enum": [
+              "small",
+              "medium",
+              "large"
+            ],
+            "description": "Brush size."
+          }
+        },
+        "required": [
+          "size"
+        ]
+      }
+    },
+    {
+      "name": "set_tool",
+      "description": "Switch between the pen and the eraser while drawing. Use when the artist says eraser, erase, rub out, or pen, draw, or pencil.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "tool": {
+            "type": "string",
+            "enum": [
+              "pen",
+              "eraser"
+            ],
+            "description": "Which tool to use."
+          }
+        },
+        "required": [
+          "tool"
+        ]
+      }
+    },
+    {
+      "name": "exit_game",
+      "description": "Leave the current game and go back to player setup so the group can start a new one. Use when the viewer says exit, quit, leave, stop the game or start over. Without confirm it opens an 'are you sure' screen that pauses the clock. Pass confirm true when they say yes, leave or confirm, and confirm false when they say keep playing, cancel or no.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "confirm": {
+            "type": "boolean",
+            "description": "true to leave now, false to keep playing. Leave out to ask first."
+          }
+        }
+      }
+    },
+    {
+      "name": "award_point",
+      "description": "After a correct guess in a game with three or more players the screen asks 'Who said it?'. Use this to answer: pass the player number of whoever got it right, for example when someone says 'it was Sam', 'Captain Banana got it' or 'player 2'. Pass 0 if the guess turned out not to be right after all. Only valid while that question is on screen.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "player": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4,
+            "description": "Player number 1-4 in scoreboard order who guessed it, or 0 for 'not right after all'."
+          }
+        },
+        "required": [
+          "player"
+        ]
+      }
+    },
+    {
+      "name": "change_winner",
+      "description": "Take back the points from the turn that just ended and ask again who got it. Use when someone says wrong person, that was wrong, give it to someone else, or change the winner. Only works on the reveal screen right after a turn in competitive mode.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "set_mode",
+      "description": "Choose how the game is scored, on the start or setup screen. 'versus' is competitive: everyone plays for their own points. 'team' is cooperative: everyone shares one score and wins together. Use for any request about team or competitive play, such as 'team mode', 'let's play as a team', 'play together', 'one team', 'co-op', 'cooperative', 'compete', 'let's compete', 'play against each other', 'versus' or 'make it a competition'. This only chooses the mode; it does not start the game.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "versus",
+              "team"
+            ],
+            "description": "versus for competitive, team for playing together."
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      }
+    },
+    {
+      "name": "continue_game",
+      "description": "Carry on after the game was paused or restored and the 'Welcome back' card is showing. Use when the viewer says continue, I'm back, ready, resume, let's go on, or keep going. Does nothing if the game is already running.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "set_hand_drawing",
+      "description": "Turn hand drawing on or off. Hand drawing uses the camera to follow the artist's hand, and it is off unless the players ask for it. Use when the viewer says draw with my hand, hand drawing, use the camera, or switch back to the remote or stop using the camera. The TV may ask the viewer for camera permission when it is turned on.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "on": {
+            "type": "boolean",
+            "description": "true to draw with the hand (uses the camera), false to draw with the remote."
+          }
+        },
+        "required": [
+          "on"
+        ]
+      }
+    },
+    {
+      "name": "set_drawing_hand",
+      "description": "Choose which hand the artist draws with when hand drawing is on. Use when the viewer says left hand, right hand, I'm left-handed, I'm right-handed, or switch hands. The other arm, raised, puts the pen down.",
+      "authority": "mutate",
+      "params": {
+        "type": "object",
+        "properties": {
+          "hand": {
+            "type": "string",
+            "enum": [
+              "left",
+              "right"
+            ],
+            "description": "The hand that moves the pen."
+          }
+        },
+        "required": [
+          "hand"
+        ]
+      }
+    }
+  ],
+  "guide": "You are the host of Draw It, a drawing and guessing game for families and kids. Keep every spoken reply to one short, cheerful sentence, and keep the tone kind and playful.\n\nTHE SECRET WORD: never say, spell, hint at, or describe the secret word. You are never told it, and you must not guess it for the players. Do not read the artist's drawing out loud.\n\nGUESSES: when someone says what they think the drawing is, call guess with just that word (drop filler like 'is it a'). Pass player only if a player's name or number was clearly spoken with the guess. Never work out who is speaking yourself. If a guess is right in a game with three or more players the screen asks who said it: answer with award_point only when someone says who it was.\n\nSETTINGS vs STARTING: choosing team or compete mode, the number of players, names, or the drawing time are settings (set_mode, set_players, set_name, set_timer). They never start the game. Only start_game starts or continues it, and only when the viewer clearly asks to start, begin, go, or play again.\n\nLEAVING: for exit, quit or leave, call exit_game with no confirm so the screen asks first. Only pass confirm true after the viewer says yes or leave to that question.\n\nKEEP IT SIMPLE: if you are unsure what the viewer wants, ask one short question instead of guessing. Never call a tool the viewer did not ask for.\n\nCAMERA: hand drawing is optional and off by default. Only turn it on (set_hand_drawing) when the viewer asks for it."
+}

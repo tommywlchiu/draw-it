@@ -1,0 +1,44 @@
+/* Shared animation vocabulary for the drawings. Apply an a-* class to a <g> or shape, plus an o-* class for the pivot. */
+.art { display: block; width: 100%; height: 100%; overflow: visible; }
+.art [class*="a-"] { transform-box: fill-box; }
+.o-c { transform-origin: 50% 50%; } .o-t { transform-origin: 50% 0%; } .o-b { transform-origin: 50% 100%; }
+.o-l { transform-origin: 0% 50%; } .o-r { transform-origin: 100% 50%; }
+.o-tl { transform-origin: 0% 0%; } .o-tr { transform-origin: 100% 0%; } .o-bl { transform-origin: 0% 100%; } .o-br { transform-origin: 100% 100%; }
+
+.a-wiggle { animation: aWiggle 1s ease-in-out infinite; }
+.a-sway { animation: aSway 2.2s ease-in-out infinite; }
+.a-wag { animation: aWag 0.45s ease-in-out infinite; }
+.a-wave { animation: aWave 0.9s ease-in-out infinite; }
+.a-flap { animation: aFlap 0.35s ease-in-out infinite; }
+.a-bob { animation: aBob 1.4s ease-in-out infinite; }
+.a-bounce { animation: aBounce 0.9s ease-in-out infinite; }
+.a-blink { animation: aBlink 3.2s ease-in-out infinite; }
+.a-pulse { animation: aPulse 1.1s ease-in-out infinite; }
+.a-spin { animation: aSpin 5s linear infinite; }
+.a-spin-fast { animation: aSpin 1.2s linear infinite; }
+.a-float { animation: aFloat 3s ease-in-out infinite; }
+.a-twinkle { animation: aTwinkle 1.2s ease-in-out infinite; }
+.a-drip { animation: aDrip 1.7s ease-in infinite; }
+.a-shake { animation: aShake 0.3s linear infinite; }
+.a-puff { animation: aPuff 2.2s ease-out infinite; }
+.a-slide { animation: aSlide 1.6s ease-in-out infinite; }
+.d1 { animation-delay: -0.25s; } .d2 { animation-delay: -0.5s; } .d3 { animation-delay: -0.75s; } .d4 { animation-delay: -1s; }
+
+@keyframes aWiggle { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+@keyframes aSway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+@keyframes aWag { 0%, 100% { transform: rotate(-16deg); } 50% { transform: rotate(16deg); } }
+@keyframes aWave { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+@keyframes aFlap { 0%, 100% { transform: rotate(-22deg); } 50% { transform: rotate(14deg); } }
+@keyframes aBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes aBounce { 0%, 100% { transform: translateY(0) scale(1.06, 0.94); } 50% { transform: translateY(-14px) scale(0.96, 1.05); } }
+@keyframes aBlink { 0%, 90%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.08); } }
+@keyframes aPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+@keyframes aSpin { to { transform: rotate(360deg); } }
+@keyframes aFloat { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-9px) rotate(3deg); } }
+@keyframes aTwinkle { 0%, 100% { transform: scale(0.55); opacity: 0.45; } 50% { transform: scale(1.1); opacity: 1; } }
+@keyframes aDrip { 0% { transform: translateY(-4px); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(16px); opacity: 0; } }
+@keyframes aShake { 0%, 100% { transform: translateX(-2px); } 50% { transform: translateX(2px); } }
+@keyframes aPuff { 0% { transform: translateY(0) scale(0.4); opacity: 0; } 25% { opacity: 0.9; } 100% { transform: translateY(-22px) scale(1.25); opacity: 0; } }
+@keyframes aSlide { 0%, 100% { transform: translateX(-6px); } 50% { transform: translateX(6px); } }
+
+@media (prefers-reduced-motion: reduce) { .art [class*="a-"] { animation: none !important; } }
